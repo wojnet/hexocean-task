@@ -4,6 +4,7 @@ import axios from "axios";
 const DishForm: React.FC = () => {
 
     type DishTypes = "pizza" | "soup" | "sandwich";
+    type SpicinessRange = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
     interface IRequestBody {
         name: string;
@@ -20,10 +21,19 @@ const DishForm: React.FC = () => {
     const [type, setType] = useState<DishTypes>("pizza");
     const [noOfSlices, setNoOfSlices] = useState<number>(0);
     const [diameter, setDiameter] = useState<number>(0);
-    const [spicinessScale, setSpicinessScale] = useState<number>(1);
+    const [spicinessScale, setSpicinessScale] = useState<SpicinessRange>(1);
     const [slicesOfBread, setSlicesOfBread] = useState<number>(0);
  
     const requestUrl: string = "https://umzzcc503l.execute-api.us-west-2.amazonaws.com/dishes/";
+
+    const resetData = () => {
+        setName("");
+        setPreparationTime("");
+        setNoOfSlices(0);
+        setDiameter(0);
+        setSpicinessScale(1);
+        setSlicesOfBread(0);
+    }
 
     const submitData = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -49,12 +59,15 @@ const DishForm: React.FC = () => {
 
         axios.post(requestUrl, requestBody,
             { headers: { 'Content-Type': 'application/json' } })
-            .then(res => console.log(res.data))
-            .catch(err => {
-                let errorKeys: string[] = Object.keys(err.response.data);
+            .then(response => {
+                console.log(response.data);
+                resetData();
+            })
+            .catch(error => {
+                let errorKeys: string[] = Object.keys(error.response.data);
                 let errorArray: string[] = [];
                 errorKeys.forEach(key => {
-                    errorArray.push(`Error in '${key}':\n${err.response.data[key]}`);
+                    errorArray.push(`Error in '${key}':\n${error.response.data[key]}`);
                 });
                 alert(errorArray.join("\n\n"));
             });
@@ -62,6 +75,7 @@ const DishForm: React.FC = () => {
 
     return (
         <div className="DishForm">
+            <h1>DISHES</h1>
             <form onSubmit={submitData}>
                 <label htmlFor="name">Dish name:</label>
                 <input 
@@ -98,11 +112,12 @@ const DishForm: React.FC = () => {
                         setType(event.currentTarget.value as DishTypes);
                     }}
                 >
-                    <option value="pizza">Pizza</option>
-                    <option value="soup">Soup</option>
-                    <option value="sandwich">Sandwich</option>
+                    <option value="pizza">🍕 Pizza</option>
+                    <option value="soup">🍲 Soup</option>
+                    <option value="sandwich">🥪 Sandwich</option>
                 </select>
 
+                {/* CONDITIONAL FIELDS */}
                 { type === "pizza" &&
                     <>
                         <label htmlFor="no_of_slices">Number of slices:</label>
@@ -143,7 +158,7 @@ const DishForm: React.FC = () => {
                             max={10}
                             value={spicinessScale ? spicinessScale : ""}
                             onChange={(event: React.FormEvent<HTMLInputElement>) => {
-                                let value: number = parseInt(event.currentTarget.value);
+                                let value: SpicinessRange = parseInt(event.currentTarget.value) as SpicinessRange;
                                 if (value > 10) value = 10;
                                 if (value < 1) value = 1;
                                 setSpicinessScale(value);
@@ -170,7 +185,7 @@ const DishForm: React.FC = () => {
                     </>
                 }
 
-                <input type="submit" />
+                <input type="submit" value="Submit" />
             </form>
         </div>
     );

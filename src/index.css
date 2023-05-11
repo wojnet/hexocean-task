@@ -1,8 +1,21 @@
-/* CUSTOM FONT IN ASSETS FOLDER PLSSSSS */
+@font-face {
+    font-family: openSans;
+    src: url("./assets/fonts/static/OpenSans-Regular.ttf");
+}
+
+@font-face {
+    font-family: openSansMedium;
+    src: url("./assets/fonts/static/OpenSans-Medium.ttf");
+}
+
+@font-face {
+    font-family: jostBold;
+    src: url("./assets/fonts/static/Jost-Bold.ttf");
+}
 
 * {
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    font-family: openSans, 'Segoe UI', Tahoma;
 }
 
 body {
@@ -14,16 +27,67 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    background-image: url("./assets/images/background4.jpg");
+    background-size: cover;
 }
 
 .DishForm {
-    padding-top: 50px;
+    width: auto;
+    height: auto;
+    padding: 60px 70px;
+    background: #fcfcfc;
+    color: #333;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px #0004;
+}
+
+.DishForm > h1 {
+    text-align: center;
+    font-size: 46px;
+    font-family: jostBold;
 }
 
 .DishForm > form {
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+}
+
+.DishForm > form label {
+    font-family: openSansMedium;
+}
+
+.DishForm > form input,
+.DishForm > form select {
+    width: 280px;
+    height: 35px;
+    margin-bottom: 8px;
+    background: #AAA2;
+    color: #555;
+    border: 1px solid #999;
+    border-radius: 5px;
+    padding: 4px;
+}
+
+.DishForm > form input:focus,
+.DishForm > form select:focus {
+    background: #AAA3;
+    border: 2px solid #666;
+    box-shadow: 0 0 10px #ddd5;
+}
+
+.DishForm > form input[type=submit] {
+    margin-top: 40px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.DishForm > form input[type=submit]:hover {
+    background: #AAA3; 
+    border: 2px solid #777;
 }
